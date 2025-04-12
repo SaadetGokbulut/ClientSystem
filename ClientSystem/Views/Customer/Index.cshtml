@@ -1,0 +1,47 @@
+@model IEnumerable<MyMongoWebApp.Models.Customer>
+
+<h2>Müşteri Listesi</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>İsim</th>
+            <th>Email</th>
+            <th>İşlem</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var customer in Model)
+        {
+            <tr>
+                <td>@customer.Name</td>
+                <td>@customer.Email</td>
+                <td>
+                    <a href="@Url.Action("Edit", new { id = customer.Id })" class="btn btn-warning">Düzenle</a> |
+                    <a href="@Url.Action("Delete", new { id = customer.Id })" class="btn btn-danger"
+                    onclick="return confirm('Silmek istediğinize emin misiniz?');">Sil</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+<p><a href="@Url.Action("Create")" class="btn btn-success">Yeni Müşteri Ekle</a></p>
+
+<h2>Yeni Müşteri Ekle</h2>
+<form method="post" action="@Url.Action("Create")">
+    <div>
+        <label>İsim:</label>
+        <input name="Name" required />
+    </div>
+    <div>
+        <label>Email :</label>
+        <input name="Email" required />
+        @if (ViewData.ModelState["Email"]?.Errors.Count > 0)
+        {
+            <span class="text-danger">@ViewData.ModelState["Email"]?.Errors[0].ErrorMessage</span>
+        }
+    </div>
+    <button type="submit">Ekle</button>
+</form>
